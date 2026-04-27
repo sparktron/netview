@@ -28,7 +28,9 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     p.add_argument(
         "--no-connections",
+        "--nc",
         action="store_true",
+        dest="no_connections",
         help="skip connections section in verbose mode",
     )
     return p

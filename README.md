@@ -82,6 +82,7 @@ Displays per-interface panels with:
 
 ```bash
 netview -v --no-connections
+netview -v --nc          # short form
 ```
 
 This displays all information except the connections table, useful when you have many listening/established connections.
