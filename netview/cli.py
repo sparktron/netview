@@ -26,11 +26,16 @@ def _build_parser() -> argparse.ArgumentParser:
         metavar="INTERVAL",
         help="live refresh (default 2s)",
     )
+    p.add_argument(
+        "--no-connections",
+        action="store_true",
+        help="skip connections section in verbose mode",
+    )
     return p
 
 
 def _make_render(
-    verbose: bool, iface_filter: str | None
+    verbose: bool, iface_filter: str | None, no_connections: bool = False
 ) -> "Callable[[], _RenderResult]":
     def render() -> _RenderResult:
         from netview.collectors import collect_all
@@ -39,7 +44,7 @@ def _make_render(
 
         ifaces, dns = collect_all(iface_filter)
         if verbose:
-            return render_verbose(ifaces, dns)
+            return render_verbose(ifaces, dns, show_connections=not no_connections)
         return render_compact(ifaces)
 
     return render
@@ -48,7 +53,7 @@ def _make_render(
 def main() -> None:
     args = _build_parser().parse_args()
     console = Console()
-    render = _make_render(args.verbose, args.interface)
+    render = _make_render(args.verbose, args.interface, args.no_connections)
 
     if args.watch is not None:
         interval = max(1, args.watch)

@@ -78,6 +78,14 @@ Displays per-interface panels with:
 - Active connections (listening + established)
 - Global DNS configuration
 
+**Skip connections section** if there are too many:
+
+```bash
+netview -v --no-connections
+```
+
+This displays all information except the connections table, useful when you have many listening/established connections.
+
 ```
 ╭──────────────────────────── lo ─────────────────────────────╮
 │ lo  loopback  UP  [LOOPBACK UP LOWER_UP]                    │
@@ -129,7 +137,7 @@ netview -h
 ```
 
 ```
-usage: netview [-h] [-v] [-i IFACE] [-w [INTERVAL]]
+usage: netview [-h] [-v] [-i IFACE] [-w [INTERVAL]] [--no-connections]
 
 TUI for Linux networking info
 
@@ -140,6 +148,7 @@ options:
                         filter to one interface
   -w [INTERVAL], --watch [INTERVAL]
                         live refresh (default 2s)
+  --no-connections      skip connections section in verbose mode
 ```
 
 ## Data Sources

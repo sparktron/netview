@@ -84,6 +84,14 @@ def test_verbose_returns_group():
     assert isinstance(result, Group)
 
 
+def test_verbose_without_connections():
+    from rich.console import Group
+    iface = _make_eth()
+    iface.connections = [Connection("tcp", "192.168.1.10", 22, "10.0.0.99", 54321, "ESTAB", "sshd")]
+    result = render_verbose([iface], _make_dns(), show_connections=False)
+    assert isinstance(result, Group)
+
+
 def test_verbose_empty_interfaces():
     from rich.console import Group
     result = render_verbose([], _make_dns())

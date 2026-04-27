@@ -33,7 +33,7 @@ def _state_str(state: InterfaceState) -> tuple[str, str]:
     return "UNKNOWN", "yellow"
 
 
-def _iface_panel(iface: Interface) -> Panel:
+def _iface_panel(iface: Interface, show_connections: bool = True) -> Panel:
     type_style = TYPE_COLORS.get(iface.type.value, TYPE_COLORS["other"])
     state_str, state_style = _state_str(iface.state)
 
@@ -95,7 +95,7 @@ def _iface_panel(iface: Interface) -> Panel:
         lines.append(Text(""))
 
     # Connections
-    if iface.connections:
+    if show_connections and iface.connections:
         lines.append(Text("Connections", style=COL_HEADER))
         ct = Table(box=None, show_header=True, header_style=COL_DIM, padding=(0, 1))
         ct.add_column("State")
@@ -126,7 +126,11 @@ def _dns_panel(dns: DNSConfig) -> Panel:
     return Panel(Group(*lines), title="DNS", expand=False)
 
 
-def render_verbose(interfaces: list[Interface], dns: DNSConfig) -> Group:
-    panels: list[ConsoleRenderable | RichCast | str] = [_iface_panel(i) for i in interfaces]
+def render_verbose(
+    interfaces: list[Interface], dns: DNSConfig, show_connections: bool = True
+) -> Group:
+    panels: list[ConsoleRenderable | RichCast | str] = [
+        _iface_panel(i, show_connections=show_connections) for i in interfaces
+    ]
     panels.append(_dns_panel(dns))
     return Group(*panels)
